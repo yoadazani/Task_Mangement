@@ -17,6 +17,7 @@ import {signIn} from "next-auth/react";
 import {loginSchema} from "@/constant/pages/login/loginConstant";
 import {OrDivider} from "@/components/shared/OrDivider";
 import {OAuthSignIn} from "@/components/pages/login/OAuthSignIn";
+import {KeyRound, MailOpen} from "lucide-react";
 
 const Login = () => {
     const router = useRouter()
@@ -69,6 +70,7 @@ const Login = () => {
                         <FormControl>
                             <div
                                 className="flex items-center gap-x-2 border rounded-lg focus-within:shadow-md  p-1 px-2">
+                                <MailOpen />
                                 <Input
                                     type="email"
                                     placeholder="example@ex.com"
@@ -90,6 +92,7 @@ const Login = () => {
                         <FormControl>
                             <div
                                 className="flex items-center gap-x-2 border rounded-lg focus-within:shadow-md  p-1 px-2">
+                                <KeyRound />
                                 <Input
                                     type="password"
                                     placeholder="Choose a password"

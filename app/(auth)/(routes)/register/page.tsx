@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
+import {KeyRound, MailOpen, User} from "lucide-react";
 
 const Register = () => {
     const router = useRouter()
@@ -60,6 +61,7 @@ const Register = () => {
                         <FormControl>
                             <div
                                 className="flex items-center gap-x-2 border rounded-lg focus-within:shadow-md  p-1 px-2">
+                                <User />
                                 <Input
                                     type="name"
                                     placeholder="Enter your name"
@@ -81,6 +83,7 @@ const Register = () => {
                         <FormControl>
                             <div
                                 className="flex items-center gap-x-2 border rounded-lg focus-within:shadow-md  p-1 px-2">
+                                <MailOpen />
                                 <Input
                                     type="email"
                                     placeholder="example@ex.com"
@@ -102,6 +105,7 @@ const Register = () => {
                         <FormControl>
                             <div
                                 className="flex items-center gap-x-2 border rounded-lg focus-within:shadow-md  p-1 px-2">
+                                <KeyRound />
                                 <Input
                                     type="password"
                                     placeholder="Choose a password"
