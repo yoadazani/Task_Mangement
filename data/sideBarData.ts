@@ -1,12 +1,12 @@
-import {Activity, LayoutDashboard, Receipt, Settings, User, Zap} from "lucide-react";
+import {Activity, Home, Receipt, Settings, User, Zap} from "lucide-react";
 import {ISideBarLink} from "@/interfaces/layout/ISideBarLink";
 
 export const sideBarData: ISideBarLink[] = [
     {
         label: "home",
-        value: "Dashboard",
+        value: "Home",
         path: "/home",
-        icon: LayoutDashboard,
+        icon: Home,
         color: "bg-red-300",
         subLinks: null
     },
