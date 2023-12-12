@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const Logo: FC<logoProps> = ({logoImage}) => {
     return <Link href={"/"} className="flex items-center gap-2 text-2xl font-semibold font-mono">
-        <Image src={logoImage} alt="logo image" height={40} width={40}/>
-        <span>Taskify</span>
+        <Image src={logoImage} alt="logo image" height={30} width={30}/>
+        <span className="text-md">Taskify</span>
     </Link>
 }
