@@ -20,7 +20,9 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  accounts Account[]
+  accounts    Account[]
+  Workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId String    @unique @db.ObjectId
 }
 
 model Account {
@@ -40,4 +42,15 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Workspace {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  description String
+  color       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users User[]
 }

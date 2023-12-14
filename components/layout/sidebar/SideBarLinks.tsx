@@ -1,9 +1,9 @@
 import React from 'react';
 import {sideBarData} from "@/data/sideBarData";
-import {cn} from "@/lib/utils";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import {usePathname, useRouter} from "next/navigation";
 
+import {cn} from "@/lib/utils";
 export const SideBarLinks = () => {
     const pathname = usePathname()
     const router = useRouter()
@@ -69,10 +69,10 @@ export const SideBarLinks = () => {
                                         >
                                             <div className="flex flex-row items-center space-x-2 py-0.5">
                                                 <div
-                                                    className={cn(["w-6 h-6 rounded-full flex items-center justify-center", subLink.color])}>
-                                                    <subLink.icon className="w-4 h-4"/>
+                                                    className={cn("w-8 h-8 rounded-full flex items-center justify-center", subLink.color)}>
+                                                    <subLink.icon className="w-5 h-5"/>
                                                 </div>
-                                                <span className="text-xs font-medium">{subLink.value}</span>
+                                                <span className="text-sm font-medium">{subLink.value}</span>
                                             </div>
                                         </AccordionContent>
                                     })}

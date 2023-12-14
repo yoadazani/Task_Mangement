@@ -7,7 +7,7 @@ export const sideBarData: ISideBarLink[] = [
         value: "Dashboard",
         path: "/home",
         icon: LayoutDashboard,
-        color: "bg-red-300",
+        color: "bg-red-200",
         subLinks: null
     },
     {
@@ -15,7 +15,7 @@ export const sideBarData: ISideBarLink[] = [
         value: "Activity",
         path: "/activity",
         icon: Activity,
-        color: "bg-violet-300",
+        color: "bg-violet-200",
         subLinks: null
     },
     {
@@ -23,14 +23,14 @@ export const sideBarData: ISideBarLink[] = [
         value: "Setting",
         path: null,
         icon: Settings,
-        color: "bg-zinc-300",
+        color: "bg-zinc-200",
         subLinks: [
             {
                 label: "account",
                 value: "Account",
                 path: "/setting/account",
                 icon: User,
-                color: "text-Slate-500",
+                color: "bg-slate-200",
                 subLinks: null
             },
             {
@@ -38,7 +38,7 @@ export const sideBarData: ISideBarLink[] = [
                 value: "plans",
                 path: "/setting/plans",
                 icon: Zap,
-                color: "text-Slate-500",
+                color: "bg-orange-200",
                 subLinks: null
             },
             {
@@ -46,7 +46,7 @@ export const sideBarData: ISideBarLink[] = [
                 value: "Billing",
                 path: "setting/billing",
                 icon: Receipt,
-                color: "bg-amber-300",
+                color: "bg-amber-200",
                 subLinks: null
             }
         ]
