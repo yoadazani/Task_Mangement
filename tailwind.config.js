@@ -7,6 +7,23 @@ module.exports = {
         './app/**/*.{ts,tsx}',
         './src/**/*.{ts,tsx}',
     ],
+    safelist: [
+        'bg-blue-200',
+        'bg-red-200',
+        'bg-pink-200',
+        'bg-orange-200',
+        'bg-amber-200',
+        'bg-lime-200',
+        'bg-teal-200',
+        'bg-fuchsia-200',
+        'bg-sky-200',
+        'bg-violet-200',
+        'bg-rose-200',
+        'bg-slate-200',
+        'bg-emerald-200',
+        'bg-indigo-200',
+        'bg-cyan-200',
+    ],
     theme: {
         container: {
             center: true,
@@ -58,12 +75,12 @@ module.exports = {
             },
             keyframes: {
                 "accordion-down": {
-                    from: { height: 0 },
-                    to: { height: "var(--radix-accordion-content-height)" },
+                    from: {height: 0},
+                    to: {height: "var(--radix-accordion-content-height)"},
                 },
                 "accordion-up": {
-                    from: { height: "var(--radix-accordion-content-height)" },
-                    to: { height: 0 },
+                    from: {height: "var(--radix-accordion-content-height)"},
+                    to: {height: 0},
                 },
             },
             animation: {

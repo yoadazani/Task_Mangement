@@ -1,16 +1,25 @@
 "use client"
+import {useEffect} from "react";
+import {useRouter} from "next/navigation";
 
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
-import {useWorkspaces} from "@/hooks/useWorkspace";
 import {Skeleton} from "@/components/ui/skeleton";
-import {CreateWorkspace} from "@/components/shared/CreateWorkspace";
-import {MoreHorizontal} from "lucide-react";
+import {CreateWorkspace} from "@/components/pages/workspace/CreateWorkspace";
+
+import {useWorkspaces} from "@/stores/workspaces";
 import {cn} from "@/lib/utils";
 
 export const WorkSpacesList = () => {
 
-    const {userWorkspaces, isLoading, isError, error} = useWorkspaces()
-    if (isError) console.log(error)
+    const router = useRouter()
+    const workspaceStore = useWorkspaces()
+
+    useEffect(() => {
+        (async () => {
+            await workspaceStore.fetchWorkspaces()
+        })()
+    }, [workspaceStore.isLoading]);
+
     return <div className="py-3">
         <Accordion type="single" collapsible>
             <AccordionItem value="workspaces" className="border-0">
@@ -22,24 +31,27 @@ export const WorkSpacesList = () => {
                 </div>
 
                 <AccordionContent className="flex flex-col p-2">
-                    {isLoading &&
+                    {workspaceStore.isLoading &&
                         <div className="space-y-2">
                             <Skeleton className="h-2 w-[80%] m-auto"/>
                             <Skeleton className="h-2 w-[80%] m-auto"/>
                         </div>
                     }
-                    {userWorkspaces?.map((workspace: any) => {
-                        const {color} = workspace
-                        return <div key={workspace.id}
-                             className="flex items-center justify-between gap-2 w-full p-2 cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-md">
+                    {workspaceStore.workspaces?.map((workspace: any, index: number) => {
+                        return <div
+                            key={index}
+                            className="flex items-center justify-between gap-2 w-full p-2 cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-md"
+                            onClick={() => {
+                                return router.push(`/workspace/${workspace.id}`)
+                            }}
+                        >
                             <div className="flex items-center gap-2">
                                 <div
-                                    className={cn("h-5 w-5 rounded-md text-center text-xs p-0.5", `bg-${color}-200`)}>
-                                    <span>{workspace.name[0].toLowerCase()}</span>
+                                    className={cn("h-5 w-5 rounded-md text-center text-xs p-0.5", `bg-${workspace.color}-200`)}>
+                                    <span>{workspace.name?.[0].toLowerCase()}</span>
                                 </div>
-                                <p className="text-zinc-500 dark:text-zinc-400 text-sm">{workspace.name.toLowerCase()}</p>
+                                <p className="text-zinc-500 dark:text-zinc-400 text-sm">{workspace.name?.toLowerCase()}</p>
                             </div>
-                            <MoreHorizontal className="h-4 w-4 text-zinc-500 dark:text-zinc-400"/>
                         </div>
                     })}
                 </AccordionContent>

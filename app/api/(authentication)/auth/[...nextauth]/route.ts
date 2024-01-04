@@ -55,12 +55,6 @@ export const authOptions = {
     ],
     callbacks: {
         async jwt({token, trigger, session, user}: JwtPayload) {
-            console.log({
-                token,
-                trigger,
-                session,
-                user
-            })
             if (trigger === "update" && session) {
                 token = {
                     ...token,
@@ -78,11 +72,6 @@ export const authOptions = {
         },
         async session({session, token}: JwtPayload) {
             if (token) session.user.id = token.uid
-
-            console.log({
-                session,
-                token
-            })
             session = {
                 ...session,
                 user: {

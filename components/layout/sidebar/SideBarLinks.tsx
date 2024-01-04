@@ -30,7 +30,7 @@ export const SideBarLinks = () => {
                                     ])}
                                 >
                                     <div
-                                        className={cn(["w-8 h-8 rounded-full flex items-center justify-center", link.color])}>
+                                        className="w-8 h-8 rounded-full flex items-center justify-center">
                                         <link.icon className="w-5 h-5"/>
                                     </div>
                                     <span className="text-sm font-medium">{link.value}</span>
@@ -47,7 +47,7 @@ export const SideBarLinks = () => {
                                     >
                                         <div className="flex flex-row items-center space-x-2">
                                             <div
-                                                className={cn(["w-8 h-8 rounded-full flex items-center justify-center", link.color])}>
+                                                className="w-8 h-8 rounded-full flex items-center justify-center">
                                                 <link.icon className="w-5 h-5"/>
                                             </div>
                                             <span className="text-sm font-medium">{link.value}</span>
@@ -69,7 +69,7 @@ export const SideBarLinks = () => {
                                         >
                                             <div className="flex flex-row items-center space-x-2 py-0.5">
                                                 <div
-                                                    className={cn("w-8 h-8 rounded-full flex items-center justify-center", subLink.color)}>
+                                                    className="w-8 h-8 rounded-full flex items-center justify-center">
                                                     <subLink.icon className="w-5 h-5"/>
                                                 </div>
                                                 <span className="text-sm font-medium">{subLink.value}</span>

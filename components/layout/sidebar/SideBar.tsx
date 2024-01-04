@@ -1,7 +1,7 @@
 "use client"
 
 import {Logo} from "@/components/shared/Logo";
-import {WorkSpacesList} from "@/components/layout/WorkSpacesList";
+import {WorkSpacesList} from "@/components/pages/workspace/WorkSpacesList";
 import {SwitchThemeUi} from "@/components/layout/SwitchThemeUi";
 import {SideBarLinks} from "@/components/layout/sidebar/SideBarLinks";
 
@@ -10,7 +10,7 @@ import {SearchBar} from "@/components/layout/SearchBar";
 import React from "react";
 export const SideBar = () => {
     return <div className="flex flex-col h-full relative bg-zinc-100 dark:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-700">
-        <div className="pl-4 py-4">
+        <div className="pl-4 pb-2">
             <Logo logoImage={logo}/>
         </div>
 

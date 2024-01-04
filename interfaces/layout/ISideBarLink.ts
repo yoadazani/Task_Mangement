@@ -3,6 +3,5 @@ export interface ISideBarLink {
     value: string
     path: string | null
     icon: any
-    color: string
     subLinks: ISideBarLink[] | null
 }

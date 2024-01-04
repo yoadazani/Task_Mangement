@@ -23,7 +23,7 @@ export const findUserByEmail = async (email: string) => {
 export const findUserById = async (userId: string) => {
     return prisma.user.findUnique({
         where: {
-            userId
+            id: userId
         }
     });
 }
