@@ -41,7 +41,7 @@ const Login = () => {
             }
 
             toast.success("Logged in successfully")
-            router.push("/dashboard")
+            router.push("/home")
 
         } catch (error: any) {
             const {response} = error

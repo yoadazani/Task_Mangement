@@ -8,7 +8,7 @@ export const OAuthSignIn = () => {
     const OAuthLogin = async (provider: string) => {
         try {
             const res = await signIn(provider, {
-                callbackUrl: "/dashboard"
+                callbackUrl: "/home"
             })
             
         } catch (error: any) {

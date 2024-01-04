@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import UserAvatar from "@/components/layout/UserAvatar";
 import {useSession} from "next-auth/react";
-import {Button} from "@/components/ui/button";
 import {ButtonLoader} from "@/components/shared/ButtonLoader";
 import {getUserFallback} from "@/utiles/getUserFallback";
 import {userMenuData} from "@/data/userMenuData";

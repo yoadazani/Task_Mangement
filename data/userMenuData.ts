@@ -1,4 +1,4 @@
-import {LogOut, User, Zap} from "lucide-react";
+import {LogOut, Receipt, User, Zap} from "lucide-react";
 
 export const userMenuData = [
     {
@@ -12,6 +12,12 @@ export const userMenuData = [
         value: 'Upgrade',
         link: 'settings/upgrade',
         icon: Zap
+    },
+    {
+        label: 'billing',
+        value: 'Billing',
+        link: 'settings/billing',
+        icon: Receipt
     },
     {
         label: 'logout',
