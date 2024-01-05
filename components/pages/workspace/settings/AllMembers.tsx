@@ -8,23 +8,20 @@ import {MoreVertical} from "lucide-react";
 import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {cn} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious
-} from "@/components/ui/pagination";
+import {MembersPagination} from "@/components/pages/workspace/settings/MembersPagination";
+import {useQueryString} from "@/hooks/useQueryString";
 
 export const AllMembers = () => {
     const router = useRouter()
     const params = useParams()
     const workspaceStore = useWorkspaces()
+    const {getQueryString} = useQueryString()
+
+
+    const currentPage = Number(getQueryString("page"))
+
 
     const [memberIsDeleted, setMemberIsDeleted] = useState<string>("")
-
 
     const handleChangeRole = async (userId: string, role: string) => {
         try {
@@ -52,6 +49,11 @@ export const AllMembers = () => {
         }
     }
 
+    const members = (workspaceStore.participants.length <= 10)
+        ? workspaceStore.participants
+        : workspaceStore.participants.slice((currentPage * 10 - 10), (currentPage * 10))
+
+
     useEffect(() => {
         (async () => {
             await workspaceStore.fetchSingleWorkspace(params.workspaceId as string)
@@ -69,7 +71,7 @@ export const AllMembers = () => {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {workspaceStore.participants.map((participant: any, index: number) => {
+                {members.map((participant: any, index: number) => {
                     return <TableRow key={index}
                                      className={cn("", {"slide-out-right": memberIsDeleted === participant.user.id})}>
                         <TableCell>{participant.user.name}</TableCell>
@@ -106,17 +108,6 @@ export const AllMembers = () => {
             <TableCaption> list of workspace members </TableCaption>
         </Table>
 
-        <Pagination className="mt-4">
-            <PaginationContent>
-                <PaginationPrevious href="#"/>
-                <PaginationLink href="#" isActive>1</PaginationLink>
-                <PaginationLink href="#">2</PaginationLink>
-                <PaginationLink href="#">3</PaginationLink>
-                <PaginationItem>
-                    <PaginationEllipsis/>
-                </PaginationItem>
-                <PaginationNext href="#"/>
-            </PaginationContent>
-        </Pagination>
+        <MembersPagination members={workspaceStore.participants}/>
     </>
 }

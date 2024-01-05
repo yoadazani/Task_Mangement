@@ -40,7 +40,7 @@ export const SettingsSidebar = () => {
             <SettingsSidebarItem
                 label="members"
                 value="Members"
-                href={`/workspace/${params.workspaceId}/settings/members`}
+                href={`/workspace/${params.workspaceId}/settings/members?page=1`}
                 icon={Users}
             />
 
