@@ -6,6 +6,7 @@ import {useEffect} from "react";
 import {cn} from "@/lib/utils";
 import {useWorkspaces} from "@/stores/workspaces";
 import {SettingsSidebarItem} from "@/components/pages/workspace/settings/SettingsSidebarItem";
+import {MEMBERS_PER_PAGE} from "@/constant/pages/workspaces/settings/MembersPerPage";
 
 
 
@@ -40,7 +41,7 @@ export const SettingsSidebar = () => {
             <SettingsSidebarItem
                 label="members"
                 value="Members"
-                href={`/workspace/${params.workspaceId}/settings/members?page=1`}
+                href={`/workspace/${params.workspaceId}/settings/members?page=1&per_page=${MEMBERS_PER_PAGE}`}
                 icon={Users}
             />
 

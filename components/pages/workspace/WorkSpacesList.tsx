@@ -8,17 +8,19 @@ import {CreateWorkspace} from "@/components/pages/workspace/CreateWorkspace";
 
 import {useWorkspaces} from "@/stores/workspaces";
 import {cn} from "@/lib/utils";
+import {useWorkspaceParticipants} from "@/stores/workspace_participants";
 
 export const WorkSpacesList = () => {
 
     const router = useRouter()
     const workspaceStore = useWorkspaces()
+    const workspaceParticipantsStore = useWorkspaceParticipants()
 
     useEffect(() => {
         (async () => {
             await workspaceStore.fetchWorkspaces()
         })()
-    }, [workspaceStore.isLoading]);
+    }, [workspaceStore.isLoading || workspaceParticipantsStore.participantsIsLoading]);
 
     return <div className="py-3">
         <Accordion type="single" collapsible>

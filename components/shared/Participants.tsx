@@ -36,7 +36,6 @@ export const Participants = ({participants}: { participants: any[] }) => {
 
                             <div className="flex items-center justify-center w-[15%]">
                                 {participant?.role === 'admin' && <Badge variant="premium" className="rounded-full">Admin</Badge>}
-                                {participant.user.id === session?.user?.id && <Badge variant="premium" className="rounded-full">You</Badge>}
                             </div>
                         </div>
                     })}

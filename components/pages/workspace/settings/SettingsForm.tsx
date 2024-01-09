@@ -19,11 +19,13 @@ import {workspaceSettingsFormSchema} from "@/constant/pages/workspaces/settings/
 
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {useWorkspaceParticipants} from "@/stores/workspace_participants";
 
 export const SettingsForm = () => {
     const router = useRouter()
     const {data: session} = useSession()
     const workspaceStore = useWorkspaces();
+    const workspaceParticipantsStore = useWorkspaceParticipants();
 
     const form = useForm<z.infer<typeof workspaceSettingsFormSchema>>({
         resolver: zodResolver(workspaceSettingsFormSchema),
@@ -59,7 +61,7 @@ export const SettingsForm = () => {
     }
     const handleLeaveWorkspace = async (workspaceId: string, userId: string) => {
         try {
-            const response = await workspaceStore.deleteParticipant(workspaceId, userId)
+            const response = await workspaceParticipantsStore.deleteParticipant(workspaceId, userId)
 
             toast.success(`You left the workspace ${workspaceId} successfully`)
 

@@ -17,6 +17,7 @@ import {acceptInvitation} from "@/services/actions/invitationActions";
 import toast from "react-hot-toast";
 import {useWorkspaces} from "@/stores/workspaces";
 import {useRouter} from "next/navigation";
+import {useWorkspaceParticipants} from "@/stores/workspace_participants";
 
 const AcceptInvitation = (
     {
@@ -30,6 +31,7 @@ const AcceptInvitation = (
     const router = useRouter()
     const {data: session} = useSession()
     const workspaceStore = useWorkspaces()
+    const workspaceParticipantsStore = useWorkspaceParticipants();
 
     const AcceptInvitation = async () => {
         const userEmail = session?.user?.email;
@@ -43,7 +45,7 @@ const AcceptInvitation = (
                 const {managerId, workspaceId, role, userId} = result
                 console.log(workspaceStore.isLoading)
 
-                await workspaceStore.addParticipant(
+                await workspaceParticipantsStore.addParticipant(
                     workspaceId,
                     userId,
                     role,

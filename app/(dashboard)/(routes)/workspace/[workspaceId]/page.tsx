@@ -12,10 +12,12 @@ import {useQueryString} from "@/hooks/useQueryString";
 import {Input} from "@/components/ui/input";
 import {FolderEdit, Info} from "lucide-react";
 import {Participants} from "@/components/shared/Participants";
+import {useWorkspaceParticipants} from "@/stores/workspace_participants";
 
 const SpecificWorkspace = () => {
     const params = useParams();
     const workspaceStore = useWorkspaces();
+    const workspaceParticipantsStore = useWorkspaceParticipants()
     const {getQueryString, deleteQueryString} = useQueryString();
     const [newWorkspaceName, setNewWorkspaceName] = useState<string>();
 
@@ -41,13 +43,21 @@ const SpecificWorkspace = () => {
 
     useEffect(() => {
         (async () => {
+           await workspaceParticipantsStore.fetchParticipants(
+               params.workspaceId as string
+           )
+        })()
+    }, [workspaceParticipantsStore.participantsIsLoading]);
+
+    useEffect(() => {
+        (async () => {
             if (params.workspaceId) {
                 await workspaceStore.fetchSingleWorkspace(params.workspaceId as string);
             } else {
                 toast.error("Workspace not found");
             }
         })()
-    }, [workspaceStore.workspace]);
+    }, [workspaceStore.isLoading]);
 
     if (workspaceStore.isLoading) return <div>Loading...</div>
 
@@ -76,8 +86,8 @@ const SpecificWorkspace = () => {
             </div>
             <div className="flex items-center space-x-5">
                 <div className="flex items-end space-x-2">
-                    <Participants participants={workspaceStore.participants}/>
-                    <ParticipantsGroup participants={workspaceStore.participants}/>
+                    <Participants participants={workspaceParticipantsStore.participants}/>
+                    <ParticipantsGroup participants={workspaceParticipantsStore.participants}/>
                 </div>
 
                 <WorkSpaceMenu/>

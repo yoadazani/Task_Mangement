@@ -8,13 +8,11 @@ import {
     PaginationPrevious
 } from "@/components/ui/pagination";
 import {useQueryString} from "@/hooks/useQueryString";
-
 export const MembersPagination = ({members}: { members: any[] }) => {
     const {createQueryString, getQueryString} = useQueryString()
     const amount_of_pages: number = members.length > 10 ? Math.floor(members.length / 10) + 1 : 1
 
     const pages: number[] = Array.from({length: amount_of_pages}, (_, index) => index + 1)
-
     const handleSelectPage = (pageNumber: number) => {
         createQueryString("page", pageNumber.toString())
     }

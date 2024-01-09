@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma_db";
-import {addWorkspaceParticipant} from "@/services/actions/workspaceActions";
+import {addParticipant} from "@/services/actions/workspaceParticpantsActions";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/app/api/(authentication)/auth/[...nextauth]/route";
 

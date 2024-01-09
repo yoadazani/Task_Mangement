@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from "next/server";
-import {addWorkspaceParticipant} from "@/services/actions/workspaceActions";
+import {addParticipant} from "@/services/actions/workspaceParticpantsActions";
 import {acceptInvitation} from "@/services/actions/invitationActions";
 
 
