@@ -1,7 +1,7 @@
 "use client"
 
 import {Settings, Users} from "lucide-react";
-import {useParams, usePathname} from "next/navigation";
+import {useParams} from "next/navigation";
 import {useEffect} from "react";
 import {cn} from "@/lib/utils";
 import {useWorkspaces} from "@/stores/workspaces";

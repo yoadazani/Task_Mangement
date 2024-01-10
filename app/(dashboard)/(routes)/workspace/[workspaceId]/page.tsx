@@ -59,8 +59,6 @@ const SpecificWorkspace = () => {
         })()
     }, [workspaceStore.isLoading]);
 
-    if (workspaceStore.isLoading) return <div>Loading...</div>
-
 
     return <div className="relative w-full h-full p-3">
         <div className="flex items-end justify-between p-4 md:px-8 border border-zinc-200 dark:border-zinc-700 rounded-lg">

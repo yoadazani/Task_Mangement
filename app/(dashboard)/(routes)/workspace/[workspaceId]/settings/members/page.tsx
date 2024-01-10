@@ -3,15 +3,10 @@
 import {Heading} from "@/components/shared/Heading";
 import Description from "@/components/shared/Description";
 import {AllMembers} from "@/components/pages/workspace/settings/AllMembers";
-import {Button} from "@/components/ui/button";
-import {Link} from "lucide-react";
-import {usePathname, useRouter} from "next/navigation";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import Invite from "@/components/pages/workspace/settings/Invite";
 
 const Members = () => {
-    const url = usePathname()
-    const router = useRouter()
 
     return <ScrollArea className="h-[calc(100vh-14rem)] md:h-[calc(100vh-4.8rem)] w-full m-auto pb-4">
         <div className="p-4 md:px-8 space-y-8">

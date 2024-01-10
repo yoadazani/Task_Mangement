@@ -6,7 +6,7 @@ import {NavBar} from "@/components/layout/NavBar";
 import AcceptInvitation from "@/components/shared/AcceptInvitation";
 import {useSession} from "next-auth/react";
 import {userAlreadyInvited} from "@/services/actions/invitationActions";
-import {useWorkspaces} from "@/stores/workspaces";
+
 
 export interface IHaveInvitation {
     hasInvitation: boolean
