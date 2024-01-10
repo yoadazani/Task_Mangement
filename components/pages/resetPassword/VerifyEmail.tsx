@@ -39,7 +39,23 @@ export const VerifyEmail = ({setUserEmail} : {setUserEmail: Dispatch<SetStateAct
             setUserEmail(data.email)
             createQueryString("emailConfirmed", "1")
 
-            await sendMail(data.email, "Confirm your email", `Your OTP code is \n\n ${OTP.value}`)
+            const mailOptions = {
+                to: data.email,
+                subject: "Invitation to join workspace",
+                text: "",
+                temp: {
+                    templateName: "confirm_email.hbs",
+                    data: {
+                        logo: {
+                            image: "https://i.redd.it/hi-this-is-a-logo-for-the-task-manager-application-called-v0-si3hzlaglc7b1.png?width=8113&format=png&auto=webp&s=750d601f5c083ada2e639535f6b0576fbcb2dc31",
+                            content: "TaskOrganizer"
+                        },
+                        otp: OTP.value
+                    }
+                }
+            }
+
+            await sendMail(mailOptions)
         }
 
         setLoading(false)

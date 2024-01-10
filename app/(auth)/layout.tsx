@@ -1,6 +1,6 @@
 import {ReactNode} from 'react';
 import {Logo} from "@/components/shared/Logo";
-import logo from '@/assets/TaskifyLogo.png'
+import logo from '@/assets/logo.png'
 
 const AuthLayout = ({children}: { children: ReactNode }) => {
     return <div>

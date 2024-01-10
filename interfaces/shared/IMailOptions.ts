@@ -3,7 +3,7 @@ export interface IMailOptions {
     subject: string,
     text: string,
     temp?: {
-        path: string,
+        templateName: string,
         data: any
     }
 }

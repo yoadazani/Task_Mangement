@@ -170,9 +170,12 @@ export const inviteToWorkspace = async (
             subject: "Invitation to join workspace",
             text: "",
             temp: {
-                path: path.join(process.cwd(), "EmailTemplates", "workspace_invitation.hbs"),
+                templateName: "workspace_invitation.hbs",
                 data: {
-                    logo: 'https://logodix.com/logo/2313.png',
+                    logo: {
+                        image: "https://i.redd.it/hi-this-is-a-logo-for-the-task-manager-application-called-v0-si3hzlaglc7b1.png?width=8113&format=png&auto=webp&s=750d601f5c083ada2e639535f6b0576fbcb2dc31",
+                        content: "TaskOrganizer"
+                    },
                     link: `${process.env.NEXT_PUBLIC_API_URL}/workspaces/${workspaceID}/join?token=${TOKEN_DATA}`,
                     inviter: session?.user?.name,
                     workspace: currWorkspace.name

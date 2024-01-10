@@ -3,8 +3,8 @@
 import {createTransport} from "nodemailer"
 import * as handlebars from "handlebars";
 import * as fs from "fs";
-import path from "path";
 import {IMailOptions} from "@/interfaces/shared/IMailOptions";
+import path from "path";
 
 
 const transporter = createTransport({
@@ -21,7 +21,8 @@ export const sendMail = async (options: IMailOptions) => {
     let htmlToSend;
 
     if (options.temp) {
-        const source = fs.readFileSync(options.temp.path, 'utf8');
+        const templatePath = path.join(process.cwd(), "EmailTemplates",  options.temp.templateName).toString();
+        const source = fs.readFileSync(templatePath, 'utf8');
         const template = handlebars.compile(source);
 
         const replacements = {...options.temp.data};
