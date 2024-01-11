@@ -22,6 +22,7 @@ model User {
 
   accounts   Account[]
   workspaces UserWorkspace[]
+  boards     UserBoard[]
 }
 
 model Account {
@@ -52,6 +53,7 @@ model Workspace {
   updatedAt   DateTime @updatedAt
 
   participants UserWorkspace[]
+  Board        Board[]
 }
 
 model UserWorkspace {
@@ -65,6 +67,33 @@ model UserWorkspace {
   updatedAt   DateTime  @updatedAt
 
   @@unique([userId, workspaceId])
+}
+
+model Board {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  workspaceId String   @db.ObjectId
+  name        String   @unique
+  description String?
+  color       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Workspace   Workspace   @relation(fields: [workspaceId], references: [id])
+  partcipants UserBoard[]
+}
+
+model UserBoard {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  boardId   String   @db.ObjectId
+  userId    String   @db.ObjectId
+  role      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  board Board @relation(fields: [boardId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@unique([userId, boardId])
 }
 
 model userInvitations {

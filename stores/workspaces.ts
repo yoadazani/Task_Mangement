@@ -1,7 +1,6 @@
 import {create} from "zustand"
 import {immer} from "zustand/middleware/immer"
 import {
-    AllManagers,
     createWorkspace,
     deleteWorkspace,
     getWorkspace,
@@ -29,12 +28,6 @@ export const useWorkspaces = create<IWorkspaceStore, [["zustand/immer", never]]>
     fetchSingleWorkspace: async (workspaceID: string) => {
         try {
             const workspace = await getWorkspace(workspaceID)
-
-            if (!workspace) {
-                set({workspace: {}})
-                return
-            }
-
             set({workspace})
         } catch (error: any) {
             throw new Error(error.message)

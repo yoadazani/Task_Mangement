@@ -3,7 +3,18 @@
 import prisma from "@/lib/prisma_db"
 import {IUser} from "@/interfaces/shared/IUser";
 import bcrypt from "bcrypt";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/app/api/(authentication)/auth/[...nextauth]/route";
 
+
+export const isAuthenticated = async () => {
+    const session = await getServerSession(authOptions);
+    const userID = session?.user?.id;
+
+    if (!userID) throw new Error("You are not authenticated")
+
+    return userID
+}
 export const createUser = async (data: IUser) => {
     return prisma.user.create({
         data

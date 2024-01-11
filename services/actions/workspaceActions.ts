@@ -1,11 +1,11 @@
 "use server"
 
 import prisma from "@/lib/prisma_db"
+import {sendMail} from "@/lib/mailSender";
+import {sendInvitation, userAlreadyInvited} from "@/services/actions/invitationActions";
+import {isAuthenticated} from "@/services/actions/userActions";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/app/api/(authentication)/auth/[...nextauth]/route";
-import {sendMail} from "@/lib/mailSender";
-import path from "path";
-import {sendInvitation, userAlreadyInvited} from "@/services/actions/invitationActions";
 
 export const CheckIfManager = async (workspaceID: string, userID: string) => {
     const workspace = await getWorkspace(workspaceID)
@@ -26,31 +26,6 @@ export const AllManagers = async (workspaceID: string) => {
     return managers
 }
 
-export const createWorkspace = async (
-    name: string,
-    description?: string,
-    color?: string
-) => {
-    const session = await getServerSession(authOptions);
-    const userID = session?.user?.id;
-
-    if (!userID) throw new Error("You are not authenticated")
-
-    return prisma.workspace.create({
-        data: {
-            name,
-            description,
-            color,
-            participants: {
-                create: {
-                    userId: userID,
-                    role: "admin"
-                }
-            }
-        }
-    })
-}
-
 export const getWorkspace = async (workspaceID: string) => {
     return prisma.workspace.findFirst({
         where: {
@@ -63,16 +38,35 @@ export const getWorkspace = async (workspaceID: string) => {
 }
 
 export const getWorkspaces = async () => {
-    const session = await getServerSession(authOptions);
-    const userID = session?.user?.id;
-
-    if (!userID) return null
+    const userId = await isAuthenticated()
 
     return prisma.workspace.findMany({
         where: {
             participants: {
                 some: {
-                    userId: userID
+                    userId
+                }
+            }
+        }
+    })
+}
+
+export const createWorkspace = async (
+    name: string,
+    description?: string,
+    color?: string
+) => {
+    const userId = await isAuthenticated()
+
+    return prisma.workspace.create({
+        data: {
+            name,
+            description,
+            color,
+            participants: {
+                create: {
+                    userId,
+                    role: "admin"
                 }
             }
         }
@@ -83,11 +77,7 @@ export const updateWorkspace = async (
     workspaceID: string,
     data: any
 ) => {
-
-    const session = await getServerSession(authOptions);
-    const userId = session?.user?.id;
-
-    if (!userId) throw new Error("You are not authenticated")
+    const userId = await isAuthenticated()
 
     const isManager = await CheckIfManager(workspaceID, userId)
     if (!isManager) throw new Error("You don't have permission to update this workspace")
@@ -101,10 +91,7 @@ export const updateWorkspace = async (
 }
 
 export const deleteWorkspace = async (workspaceID: string) => {
-    const session = await getServerSession(authOptions);
-    const userId = session?.user?.id;
-
-    if (!userId) throw new Error("You are not authenticated")
+    const userId = await isAuthenticated()
 
     const isManager = await CheckIfManager(workspaceID, userId)
     if (!isManager) throw new Error("You are not allowed to delete this workspace")
@@ -133,9 +120,7 @@ export const inviteToWorkspace = async (
     role: string
 ) => {
     const session = await getServerSession(authOptions);
-    const userId = session?.user?.id;
-
-    if (!userId) throw new Error("You are not authenticated")
+    const userId = await isAuthenticated()
 
     const isManager = await CheckIfManager(workspaceID, userId)
     if (!isManager) throw new Error("You don't have permission to invite participants to this workspace")
