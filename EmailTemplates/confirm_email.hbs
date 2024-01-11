@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f7fafc; font-family: 'Helvetica Neue', sans-serif;">
+<div style="padding: 40px;">
+
+    <div style="max-width: 600px; margin: 20px auto;">
+        <div style="display: flex; align-items: center; justify-content: left;">
+            <img src="{{logo.image}}" alt="Your Logo" width="35" style="mix-blend-mode: multiply;">
+            <span style="font-size: 24px; font-weight: bold; margin-left: 8px; margin-top: 8px;">
+                {{logo.content}}
+            </span>
+        </div>
+    </div>
+
+    <div style="background: #ffffff; border: 1px solid rgba(0,0,0,0.3); border-radius: 6px; padding: 20px">
+        <div style="padding: 20px; text-align: center">
+            <h1 style="font-weight: bold; font-size: 24px">
+                Verify your account
+            </h1>
+
+            <p style="margin-top: 40px; font-size: 16px; color: #666666"> Your verification code is: </p>
+            <strong style="font-weight: bold; font-size: 32px; letter-spacing: 5px">
+                {{otp}}
+            </strong>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

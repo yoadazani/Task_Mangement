@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace Invitation</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f7fafc; font-family: 'Helvetica Neue', sans-serif;">
+<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+    <tr>
+        <td style="padding: 40px 20px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+                   style="max-width: 600px; margin: 0 auto;">
+                <tr>
+                    <td style="display: flex; align-items: center; justify-content: left;">
+                        <img src="{{logo.image}}" alt="Your Logo" width="35" style="mix-blend-mode: multiply;">
+                        <span style="font-size: 24px; font-weight: bold; margin-left: 8px; margin-top: 8px;">
+                            {{logo.content}}
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+                   style="max-width: 600px; margin: 20px auto;">
+                <tr>
+                    <td style="border: 1px solid rgba(0,0,0,0.3); border-radius: 6px; text-align: center; padding: 20px">
+                        <h1 style="font-size: 22px; color: #333333; margin-bottom: 20px; line-height: 1.5">
+                            Join the {{workspace}} TaskOrganizer team.
+                        </h1>
+
+                        <div style="background-color: #ffffff; padding: 30px; margin: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+                            <p style="color: #666666; padding: 12px; font-size: 16px; font-weight: bold">
+                                {{inviter}} invited you
+                            </p>
+
+                            <p style="color: #666666; line-height: 1.6; margin-top: 15px">
+                                With TaskOrganizer you can work on anything with anyone: workspaces, Boards, Tasks and
+                                chats.
+                            </p>
+
+                        </div>
+
+                        <div style="margin: 40px auto; width: 100%; max-width: 800px">
+                            <a href="{{link}}"
+                               style="
+                                   width: inherit;
+                                   background: linear-gradient(to right, #8b5cf6, #a78bfa);
+                                   padding: 12px 12px;
+                                   border-radius: 6px;
+                                   text-decoration: none;
+                                   color: #fff;
+                                   font-size: 18px;
+                                   font-weight: bold;
+                                   transition: all 0.3s ease-in-out;
+                                   text-align: center;
+                               "
+                            >
+                                Accept Invite
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,1 @@
+export const MEMBERS_PER_PAGE = 10
