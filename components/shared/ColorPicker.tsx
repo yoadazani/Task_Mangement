@@ -1,14 +1,14 @@
-"use client"
-
 import {colors} from "@/data/colors";
 import {cn} from "@/lib/utils";
 import React from "react";
 import {ControllerRenderProps} from "react-hook-form";
 import {workspaceSettingsFormSchema} from "@/constant/pages/workspaces/settings/workspaceSettingsFormConstant";
 import {z} from "zod";
+import {boardsSchema} from "@/constant/pages/boards/boardsConstant";
 
-export const ColorPicker = ({field, defaultColor}: {
-    field: ControllerRenderProps<z.infer<typeof workspaceSettingsFormSchema>, "color">, defaultColor?: string
+export const ColorPicker = ({onChangeField, defaultColor}: {
+    onChangeField: (...Events: any[]) => void,
+    defaultColor?: string
 }) => {
     const [selectedColor, setSelectedColor] = React.useState(defaultColor ?? colors[0].split("-")[1])
 
@@ -18,7 +18,7 @@ export const ColorPicker = ({field, defaultColor}: {
                 key={color}
                 onClick={() => {
                     let currColor = color.split("-")[1]
-                    field.onChange(currColor)
+                    onChangeField(currColor)
                     setSelectedColor(currColor)
                 }}
                 className={cn("h-8 w-8 rounded-lg", color, {

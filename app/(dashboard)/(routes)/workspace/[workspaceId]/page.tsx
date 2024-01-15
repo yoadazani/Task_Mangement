@@ -10,9 +10,13 @@ import toast from "react-hot-toast";
 import {WorkSpaceMenu} from "@/components/pages/workspace/WorkSpaceMenu";
 import {useQueryString} from "@/hooks/useQueryString";
 import {Input} from "@/components/ui/input";
-import {FolderEdit, Info} from "lucide-react";
+import {BellRing, FolderEdit, Info} from "lucide-react";
 import {Participants} from "@/components/shared/Participants";
 import {useWorkspaceParticipants} from "@/stores/workspace_participants";
+import {CreateBoardCard} from "@/components/pages/workspace/CreateBoardCard";
+import {Boards} from "@/components/pages/boards/Boards";
+import {ScrollArea} from "@/components/ui/scroll-area";
+import Image from "next/image";
 
 const SpecificWorkspace = () => {
     const params = useParams();
@@ -43,9 +47,9 @@ const SpecificWorkspace = () => {
 
     useEffect(() => {
         (async () => {
-           await workspaceParticipantsStore.fetchParticipants(
-               params.workspaceId as string
-           )
+            await workspaceParticipantsStore.fetchParticipants(
+                params.workspaceId as string
+            )
         })()
     }, [workspaceParticipantsStore.participantsIsLoading]);
 
@@ -60,8 +64,9 @@ const SpecificWorkspace = () => {
     }, [workspaceStore.isLoading]);
 
 
-    return <div className="relative w-full h-full p-3">
-        <div className="flex items-end justify-between p-4 md:px-8 border border-zinc-200 dark:border-zinc-700 rounded-lg">
+    return <div className="relative w-full h-full space-y-2 p-3">
+        <div
+            className="flex items-end justify-between p-2 md:px-5">
             <div className="space-y-2">
                 {
                     !renameOn
@@ -82,28 +87,27 @@ const SpecificWorkspace = () => {
                 }
                 <Description>{workspaceStore.workspace.description}</Description>
             </div>
+
+            {/* participantsGroup and workspaceOptions */}
             <div className="flex items-center space-x-5">
                 <div className="flex items-end space-x-2">
                     <Participants participants={workspaceParticipantsStore.participants}/>
                     <ParticipantsGroup participants={workspaceParticipantsStore.participants}/>
                 </div>
 
+                {/* Notifications */}
+                <BellRing className="h-5 w-5 text-zinc-500 dark:text-zinc-400 cursor-pointer"/>
+
                 <WorkSpaceMenu/>
             </div>
         </div>
 
-        <div className="h-[calc(100vh-10rem)] grid grid-cols-1 space-y-2 md:space-y-0 md:grid-cols-3 md:space-x-2 py-3 md:py-1">
-            <div className="col-span-2 border rounded-lg border-zinc-200 dark:border-zinc-700 p-4">
-                <div className="h-full">
-                    <p className="text-sm font-medium text-zinc-500">Boards</p>
-                </div>
+        <ScrollArea className="relative h-[calc(100vh-10rem)] px-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 py-2">
+                <CreateBoardCard/>
+                <Boards/>
             </div>
-            <div className="border rounded-lg border-zinc-200 dark:border-zinc-700 p-4">
-                <div className="h-full">
-                    <p className="text-sm font-medium text-zinc-500">Notifications</p>
-                </div>
-            </div>
-        </div>
+        </ScrollArea>
     </div>
 }
 export default SpecificWorkspace;

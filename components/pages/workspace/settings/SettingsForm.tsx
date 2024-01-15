@@ -144,7 +144,10 @@ export const SettingsForm = () => {
                                             </div>
                                         </AccordionTrigger>
                                         <AccordionContent>
-                                            <ColorPicker field={field} defaultColor={workspaceStore.workspace.color}/>
+                                            <ColorPicker
+                                                onChangeField={field.onChange}
+                                                defaultColor={workspaceStore.workspace.color}
+                                            />
                                         </AccordionContent>
                                     </AccordionItem>
                                 </Accordion>

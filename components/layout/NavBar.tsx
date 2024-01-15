@@ -6,7 +6,7 @@ import {SearchBar} from "@/components/layout/SearchBar";
 export const NavBar = () => {
     return (
         <div
-            className="flex justify-between md:justify-end items-center p-1 px-2 border-b border-zinc-200 dark:border-zinc-700 dark:bg-zinc-800 shadow-md">
+            className="flex justify-between md:justify-end items-center p-1 px-2 border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 shadow-md">
             <MobileSideBar/>
             <div className="hidden md:block">
                 <SearchBar/>

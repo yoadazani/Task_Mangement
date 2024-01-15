@@ -78,8 +78,8 @@ model Board {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  Workspace   Workspace   @relation(fields: [workspaceId], references: [id])
-  partcipants UserBoard[]
+  Workspace    Workspace   @relation(fields: [workspaceId], references: [id])
+  participants UserBoard[]
 }
 
 model UserBoard {
