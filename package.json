@@ -37,6 +37,7 @@
     "next-auth": "^4.24.5",
     "nodemailer": "^6.9.7",
     "react": "^18",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",
     "react-hook-form": "^7.48.2",
     "react-hot-toast": "^2.4.1",

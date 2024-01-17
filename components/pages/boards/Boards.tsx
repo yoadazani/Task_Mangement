@@ -13,7 +13,7 @@ export const Boards = () => {
         (async () => {
             await boardStore.fetchBoards(params.workspaceId as string)
         })()
-    }, [boardStore.isLoading])
+    }, [boardStore.boards])
 
     return (
         boardStore.boards.map((board: any) => {

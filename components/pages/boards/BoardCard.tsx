@@ -1,12 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {cn} from "@/lib/utils";
 import {CalendarCheck, MoreHorizontal} from "lucide-react";
+import {useWorkspaceParticipants} from "@/stores/workspace_participants";
+import {ParticipantsGroup} from "@/components/shared/ParticipantsGroup";
+import {useBoardParticipants} from "@/stores/board_participants";
 
 export const BoardCard = ({board}: {board: any}) => {
+    const boardParticipantsStore = useBoardParticipants()
+
+    useEffect(() => {
+        (async () => {
+            await boardParticipantsStore.fetchParticipants(board.id)
+        })()
+    }, [boardParticipantsStore.participantsIsLoading]);
+
+
     return <Card
         key={board.id}
-        className="p-2 flex flex-col justify-between space-y-2 focus:shadow-2xl dark:bg-zinc-800"
+        className="p-2 flex flex-col justify-between space-y-2 hover:drop-shadow-md dark:bg-zinc-800 cursor-grab"
+        draggable
     >
         <CardHeader className="flex flex-row items-start justify-between p-1">
             <div className={cn("w-8 h-8 rounded-full", `bg-${board.color}-200 dark:bg-${board.color}-400`)}/>
@@ -29,9 +42,12 @@ export const BoardCard = ({board}: {board: any}) => {
                     {new Date(board.createdAt).toLocaleDateString()}
                 </p>
             </div>
-            <div className="text-sm text-zinc-500 dark:text-zinc-400">
-                <p>Participants Group</p>
-            </div>
+            <ParticipantsGroup
+                participants={boardParticipantsStore.participants}
+                avatarHeight="h-5"
+                avatarWidth="w-5"
+                maxAvatars={3}
+            />
         </CardFooter>
     </Card>
 

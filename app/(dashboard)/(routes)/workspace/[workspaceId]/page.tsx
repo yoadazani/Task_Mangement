@@ -16,7 +16,6 @@ import {useWorkspaceParticipants} from "@/stores/workspace_participants";
 import {CreateBoardCard} from "@/components/pages/workspace/CreateBoardCard";
 import {Boards} from "@/components/pages/boards/Boards";
 import {ScrollArea} from "@/components/ui/scroll-area";
-import Image from "next/image";
 
 const SpecificWorkspace = () => {
     const params = useParams();
@@ -92,7 +91,7 @@ const SpecificWorkspace = () => {
             <div className="flex items-center space-x-5">
                 <div className="flex items-end space-x-2">
                     <Participants participants={workspaceParticipantsStore.participants}/>
-                    <ParticipantsGroup participants={workspaceParticipantsStore.participants}/>
+                    <ParticipantsGroup participants={workspaceParticipantsStore?.participants} maxAvatars={5}/>
                 </div>
 
                 {/* Notifications */}

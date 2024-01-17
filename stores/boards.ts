@@ -11,8 +11,6 @@ export const useBoards = create<IBoardsStore, [["zustand/immer", never]]>(immer(
     isLoading: true,
 
     fetchBoards: async (workspaceId: string) => {
-        set({isLoading: true})
-
         try {
             const boards = await fetchBoards(workspaceId)
             set({boards})
@@ -23,8 +21,6 @@ export const useBoards = create<IBoardsStore, [["zustand/immer", never]]>(immer(
         }
     },
     fetchSingleBoard: async (boardId: string) => {
-        set({isLoading: true})
-
         try {
             const board = await fetchBoards(boardId)
             set({board})
