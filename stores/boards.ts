@@ -22,16 +22,16 @@ export const useBoards = create<IBoardsStore, [["zustand/immer", never]]>(immer(
         }
     },
     swapBoards: async (sourceId: string, sourceIndex: number, destinationIndex: number) => {
-        set({isLoading: true})
         try {
-
             set((state) => {
                 state.boards = arrayMove(state.boards, sourceIndex, destinationIndex)
                 return state
             })
-            await swapBoards(sourceId, sourceIndex + 1, destinationIndex + 1)
+            const boardsSwapped = await swapBoards(sourceId, sourceIndex + 1, destinationIndex + 1)
 
-            return toast.success("Board swapped successfully")
+            if (boardsSwapped) {
+                return toast.success("Board swapped successfully")
+            }
         } catch (error: any) {
             return toast.error(error.message)
         } finally {

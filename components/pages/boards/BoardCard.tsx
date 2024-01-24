@@ -4,9 +4,30 @@ import {cn} from "@/lib/utils";
 import {CalendarCheck, MoreHorizontal} from "lucide-react";
 import {ParticipantsGroup} from "@/components/shared/ParticipantsGroup";
 import {useBoardParticipants} from "@/stores/board_participants";
+import {useSortable} from "@dnd-kit/sortable";
+import {CSS} from "@dnd-kit/utilities";
 
-export const BoardCard = ({board, className}: { board: any, className?: string}) => {
+export const BoardCard = ({board, isOutOfRect, className}: { board: any, isOutOfRect?: boolean, className?: string }) => {
     const boardParticipantsStore = useBoardParticipants()
+
+    const {
+        setNodeRef,
+        listeners,
+        attributes,
+        transform,
+        transition,
+        isDragging
+    } = useSortable({
+        id: board.id,
+        data: {
+            type: "board"
+        }
+    })
+
+    const style = !isOutOfRect ? {
+        transform: CSS.Transform.toString(transform),
+        transition
+    }: {}
 
     useEffect(() => {
         (async () => {
@@ -16,10 +37,22 @@ export const BoardCard = ({board, className}: { board: any, className?: string})
 
 
     return <Card
-        className={cn("p-2 flex flex-col justify-between space-y-2 hover:drop-shadow-md dark:bg-zinc-800 cursor-grab", className)}>
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        className={
+            cn(
+                "p-2 flex flex-col justify-between space-y-2 hover:drop-shadow-md dark:bg-zinc-800",
+                className,
+                isDragging && "opacity-50 border-2 border-dashed border-zinc-400 dark:border-zinc-600"
+            )
+        }
+    >
         <CardHeader className="flex flex-row items-start justify-between p-1">
             <div
-                className={cn("w-8 h-8 rounded-full", `bg-${board.color}-200 dark:bg-${board.color}-400`)}/>
+                {...listeners}
+                className={cn("w-8 h-8 rounded-full cursor-grab", `bg-${board.color}-200 dark:bg-${board.color}-400`)}
+            />
             <MoreHorizontal className="h-5 w-5 z-50 cursor-pointer"/>
         </CardHeader>
 

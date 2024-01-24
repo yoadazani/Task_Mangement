@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useBoards} from "@/stores/boards";
 import {useParams} from "next/navigation";
 import {BoardCard} from "@/components/pages/boards/BoardCard";
@@ -11,59 +11,23 @@ import {
     closestCorners,
     DndContext,
     DragEndEvent,
-    DragOverEvent,
+    DragMoveEvent,
     DragOverlay,
     DragStartEvent,
     KeyboardSensor,
-    MouseSensor,
     PointerSensor,
     TouchSensor,
-    UniqueIdentifier,
     useSensor,
     useSensors
 } from "@dnd-kit/core";
-import {CSS} from "@dnd-kit/utilities";
-import {arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable} from "@dnd-kit/sortable";
-import {cn} from "@/lib/utils";
+import {SortableContext, sortableKeyboardCoordinates} from "@dnd-kit/sortable";
 
-
-const SortableItem = ({id, children}: { id: UniqueIdentifier, children: React.ReactNode }) => {
-    const {
-        setNodeRef,
-        listeners,
-        attributes,
-        transform,
-        transition,
-        isDragging,
-    } = useSortable({
-        id,
-        data: {
-            type: "board"
-        }
-    })
-
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition
-    }
-
-    return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
-            className={cn(isDragging && "opacity-50 border-2 border-dashed border-zinc-400 dark:border-zinc-600")}
-        >
-            {children}
-        </div>
-    )
-}
 
 export const Boards = () => {
     const params = useParams()
     const boardStore = useBoards()
-    const [currentBoardId, setCurrentBoardId] = React.useState<string | null>(null)
+    const [currentBoardId, setCurrentBoardId] = useState<string | null>(null)
+    const [isOutOfRect, setIsOutOfRect] = useState(false)
 
     const activeBoard = currentBoardId && boardStore.boards.find((board: any) => board.id === currentBoardId)
 
@@ -92,6 +56,38 @@ export const Boards = () => {
         const {active, over} = event
         const {id} = active
         const {id: overId} = over!
+
+        const contextRect = document.getElementById('boardsArea')
+
+        if (!contextRect) return
+
+        const contextArea = contextRect.getBoundingClientRect()
+
+
+        const {
+            left: activeLeft,
+            top: activeTop,
+            right: activeRight,
+            bottom: activeBottom
+        } = active.rect.current.translated!
+
+        const {
+            left: contextLeft,
+            top: contextTop,
+            right: contextRight,
+            bottom: contextBottom
+        } = contextArea
+
+
+        if (
+            !(
+                activeLeft >= contextLeft && activeRight <= contextRight &&
+                activeTop >= contextTop && activeBottom <= contextBottom
+            )
+        ) {
+            return
+        }
+
         if (
             active.data.current?.type !== "board" ||
             over?.data.current?.type !== "board" ||
@@ -104,11 +100,6 @@ export const Boards = () => {
         const activeIndex = boardStore.boards.findIndex((board: any) => board.id === id)
         const overIndex = boardStore.boards.findIndex((board: any) => board.id === overId)
 
-        console.log("Handle drag end: ", {
-            activeIndex,
-            overIndex
-        })
-
         setCurrentBoardId(null)
         return await boardStore.swapBoards(
             id as string,
@@ -118,28 +109,40 @@ export const Boards = () => {
 
     }
 
-    const handleDragOver = async (event: DragOverEvent) => {
+    const handleDragMove = async (event: DragMoveEvent) => {
         const {active, over} = event
-        const {id} = active
-        const {id: overId} = over!
+
+        const contextRect = document.getElementById('boardsArea')
+
+        if (!contextRect) return
+
+        const contextArea = contextRect.getBoundingClientRect()
+
+
+        const {
+            left: activeLeft,
+            top: activeTop,
+            right: activeRight,
+            bottom: activeBottom
+        } = active.rect.current.translated!
+
+        const {
+            left: contextLeft,
+            top: contextTop,
+            right: contextRight,
+            bottom: contextBottom
+        } = contextArea
 
         if (
-            active.data.current?.type !== "board" ||
-            over?.data.current?.type !== "board" ||
-            !active || !over || active.id === overId
-        ) return
-
-        const activeIndex = boardStore.boards.findIndex((board: any) => board.id === id)
-        const overIndex = boardStore.boards.findIndex((board: any) => board.id === overId)
-
-        console.log("Handle drag over ",{
-            activeIndex,
-            overIndex
-        })
-        //
-        // await boardStore.swapBoards(id as string, overId as string, activeIndex, overIndex, false)
-
-        console.log(`Dragged ${id} over ${overId}`)
+            !(
+                activeLeft >= contextLeft && activeRight <= contextRight &&
+                activeTop >= contextTop && activeBottom <= contextBottom
+            )
+        ) {
+            setIsOutOfRect(true)
+        } else {
+            setIsOutOfRect(false)
+        }
     }
 
     return (
@@ -147,31 +150,30 @@ export const Boards = () => {
             sensors={sensors}
             collisionDetection={closestCorners}
             onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
+            onDragMove={handleDragMove}
             onDragEnd={handleDragEnd}
         >
-            <ScrollArea className="h-[calc(100vh-13rem)] md:h-[calc(100vh-10rem)] p-2 md:py-0 md:px-8 xl:px-16 border">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-2">
+            <ScrollArea
+                className="h-[calc(100vh-13rem)] md:h-[calc(100vh-10rem)] p-2 md:py-0 md:px-8 xl:px-16 border">
+                <div
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-2 overflow-hidden border-2 p-2"
+                    id="boardsArea">
                     <SortableContext
-                        items={boardStore.boards.map((board: any) => board.id)}
                         id="boardsArea"
+                        items={boardStore.boards.map((board: any) => board.id)}
                     >
-                        {boardStore.boards.map((board: any, index: number) => (
-                            <SortableItem
-                                key={board.id}
-                                id={board.id}
-                            >
-                                <BoardCard board={board}/>
-                            </SortableItem>
+                        {boardStore.boards.map((board: any) => (
+                            <BoardCard key={board.id} board={board} isOutOfRect={isOutOfRect}/>
                         ))}
                     </SortableContext>
+
                     <CreateBoardCard/>
 
                     <MobileCreateBoard/>
                 </div>
             </ScrollArea>
             <DragOverlay>
-                {activeBoard && <BoardCard board={activeBoard} className="transform rotate-6 "/>}
+                {activeBoard && <BoardCard board={activeBoard} className="transform rotate-6"/>}
             </DragOverlay>
         </DndContext>
     )
