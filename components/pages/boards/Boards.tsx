@@ -37,9 +37,13 @@ export const Boards = () => {
         })()
     }, [boardStore.isLoading])
 
+    const detectSensors = () => {
+        const isWebEntry = sessionStorage.getItem('isWebEntry')
+        return isWebEntry ? PointerSensor : TouchSensor
+    }
+
     const sensors = useSensors(
-        useSensor(TouchSensor),
-        useSensor(PointerSensor),
+        useSensor(detectSensors()),
         useSensor(KeyboardSensor, {coordinateGetter: sortableKeyboardCoordinates})
     )
 
