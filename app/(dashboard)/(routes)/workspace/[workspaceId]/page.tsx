@@ -13,9 +13,7 @@ import {Input} from "@/components/ui/input";
 import {BellRing, FolderEdit, Info} from "lucide-react";
 import {Participants} from "@/components/shared/Participants";
 import {useWorkspaceParticipants} from "@/stores/workspace_participants";
-import {CreateBoardCard} from "@/components/pages/workspace/CreateBoardCard";
 import {Boards} from "@/components/pages/boards/Boards";
-import {ScrollArea} from "@/components/ui/scroll-area";
 
 const SpecificWorkspace = () => {
     const params = useParams();
@@ -62,10 +60,9 @@ const SpecificWorkspace = () => {
         })()
     }, [workspaceStore.isLoading]);
 
-
     return <div className="relative w-full h-full space-y-2 p-3">
         <div
-            className="flex items-end justify-between p-2 md:px-5">
+            className="flex flex-col space-y-4 md:flex-row md:items-end justify-between p-2 md:px-5">
             <div className="space-y-2">
                 {
                     !renameOn
@@ -88,7 +85,8 @@ const SpecificWorkspace = () => {
             </div>
 
             {/* participantsGroup and workspaceOptions */}
-            <div className="flex items-center space-x-5">
+            <div className="flex items-center space-x-5 self-end">
+
                 <div className="flex items-end space-x-2">
                     <Participants participants={workspaceParticipantsStore.participants}/>
                     <ParticipantsGroup participants={workspaceParticipantsStore?.participants} maxAvatars={5}/>
@@ -101,12 +99,7 @@ const SpecificWorkspace = () => {
             </div>
         </div>
 
-        <ScrollArea className="relative h-[calc(100vh-10rem)] px-2">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 py-2">
-                <CreateBoardCard/>
-                <Boards/>
-            </div>
-        </ScrollArea>
+        <Boards/>
     </div>
 }
 export default SpecificWorkspace;

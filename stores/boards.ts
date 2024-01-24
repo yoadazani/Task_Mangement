@@ -2,8 +2,9 @@ import {create} from "zustand"
 import {immer} from "zustand/middleware/immer"
 
 import {IBoardsStore} from "@/interfaces/pages/boards/IBoardsStore";
-import {createBoard, deleteBoard, fetchBoards, updateBoard} from "@/services/actions/boardActions";
+import {createBoard, deleteBoard, fetchBoards, swapBoards, updateBoard} from "@/services/actions/boardActions";
 import toast from "react-hot-toast";
+import {arrayMove} from "@dnd-kit/sortable";
 
 export const useBoards = create<IBoardsStore, [["zustand/immer", never]]>(immer((set, get) => ({
     boards: [],
@@ -14,6 +15,23 @@ export const useBoards = create<IBoardsStore, [["zustand/immer", never]]>(immer(
         try {
             const boards = await fetchBoards(workspaceId)
             set({boards})
+        } catch (error: any) {
+            return toast.error(error.message)
+        } finally {
+            set({isLoading: false})
+        }
+    },
+    swapBoards: async (sourceId: string, sourceIndex: number, destinationIndex: number) => {
+        set({isLoading: true})
+        try {
+
+            set((state) => {
+                state.boards = arrayMove(state.boards, sourceIndex, destinationIndex)
+                return state
+            })
+            await swapBoards(sourceId, sourceIndex + 1, destinationIndex + 1)
+
+            return toast.success("Board swapped successfully")
         } catch (error: any) {
             return toast.error(error.message)
         } finally {
