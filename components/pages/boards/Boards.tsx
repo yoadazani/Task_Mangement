@@ -37,13 +37,10 @@ export const Boards = () => {
         })()
     }, [boardStore.isLoading])
 
-    const detectSensors = () => {
-        const isWebEntry = sessionStorage.getItem('isWebEntry')
-        return isWebEntry ? PointerSensor : TouchSensor
-    }
 
     const sensors = useSensors(
-        useSensor(detectSensors()),
+        useSensor(PointerSensor),
+        useSensor(TouchSensor),
         useSensor(KeyboardSensor, {coordinateGetter: sortableKeyboardCoordinates})
     )
 
@@ -150,6 +147,7 @@ export const Boards = () => {
     }
 
     return (
+        <div id="boardsArea" className="h-full">
         <DndContext
             sensors={sensors}
             collisionDetection={closestCorners}
@@ -158,10 +156,9 @@ export const Boards = () => {
             onDragEnd={handleDragEnd}
         >
             <ScrollArea
-                className="h-[calc(100vh-13rem)] md:h-[calc(100vh-10rem)] p-2 md:py-0 md:px-8 xl:px-16 border">
+                className="h-[calc(100vh-13rem)] md:h-[calc(100vh-10rem)] p-2 md:py-0 md:px-8 xl:px-16 border rounded-lg">
                 <div
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-2 overflow-hidden border-2 p-2"
-                    id="boardsArea">
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-2 overflow-hidden p-2">
                     <SortableContext
                         id="boardsArea"
                         items={boardStore.boards.map((board: any) => board.id)}
@@ -180,5 +177,6 @@ export const Boards = () => {
                 {activeBoard && <BoardCard board={activeBoard} className="transform rotate-6"/>}
             </DragOverlay>
         </DndContext>
+        </div>
     )
 }

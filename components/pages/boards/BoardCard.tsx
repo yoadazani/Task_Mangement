@@ -25,6 +25,7 @@ export const BoardCard = ({board, isOutOfRect, className}: { board: any, isOutOf
     })
 
     const style = !isOutOfRect ? {
+        touchAction: "none",
         transform: CSS.Transform.toString(transform),
         transition
     }: {}
