@@ -2,7 +2,13 @@ import {create} from "zustand"
 import {immer} from "zustand/middleware/immer"
 
 import {IBoardsStore} from "@/interfaces/pages/boards/IBoardsStore";
-import {createBoard, deleteBoard, fetchBoards, swapBoards, updateBoard} from "@/services/actions/boardActions";
+import {
+    createBoard,
+    deleteBoard,
+    fetchBoards,
+    swapBoards,
+    updateBoard
+} from "@/services/actions/boardActions";
 import toast from "react-hot-toast";
 import {arrayMove} from "@dnd-kit/sortable";
 
@@ -68,6 +74,7 @@ export const useBoards = create<IBoardsStore, [["zustand/immer", never]]>(immer(
         }
     },
     updateBoard: async (boardId: string, data: any) => {
+        set({isLoading: true})
         try {
             const updatedBoard = await updateBoard(boardId, data)
             set({board: updatedBoard})
@@ -75,6 +82,8 @@ export const useBoards = create<IBoardsStore, [["zustand/immer", never]]>(immer(
             return toast.success(`Board ${updatedBoard.name} updated successfully`)
         } catch (error: any) {
             return toast.error(error.message)
+        } finally {
+            set({isLoading: false})
         }
     },
     deleteBoard: async (boardId: string) => {
@@ -87,13 +96,28 @@ export const useBoards = create<IBoardsStore, [["zustand/immer", never]]>(immer(
                 state.boards.filter((board: any) => board.id !== boardId)
                 return state
             })
+            console.log(deletedBoard)
 
-            return toast.success(`Board ${deletedBoard.name} deleted successfully`)
+            return toast.success(`Board ${deletedBoard[1].name} deleted successfully`)
         } catch (error: any) {
             return toast.error(error.message)
         } finally {
             set({isLoading: false})
         }
     },
+    moveBoard: async (boardId: string, destWorkspaceId: string) => {
+        set({isLoading: true})
 
+        try {
+            await updateBoard(boardId, {workspaceId: destWorkspaceId})
+            set((state) => {
+                state.boards.filter((board: any) => board.id !== boardId)
+                return state
+            })
+        } catch (error: any) {
+            return toast.error(error.message)
+        } finally {
+            set({isLoading: false})
+        }
+    }
 })))

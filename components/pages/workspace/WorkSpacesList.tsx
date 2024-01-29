@@ -44,7 +44,7 @@ export const WorkSpacesList = () => {
                             key={index}
                             className="flex items-center justify-between gap-2 w-full p-2 cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-md"
                             onClick={() => {
-                                return router.push(`/workspace/${workspace.id}`)
+                                return router.push(`/workspace/${workspace.id}/boards`)
                             }}
                         >
                             <div className="flex items-center gap-2">

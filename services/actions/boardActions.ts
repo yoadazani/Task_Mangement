@@ -9,7 +9,6 @@ export const isBoardManager = async (boardID: string, userID: string) => {
 
     return board.participants.some((participant: any) => participant.userId === userID && participant.role === "admin")
 }
-
 export const fetchBoards = async (workspaceId: string) => {
     const userId = await isAuthenticated()
 
@@ -31,7 +30,145 @@ export const fetchBoards = async (workspaceId: string) => {
         throw new Error(error.message)
     }
 }
+export const fetchSingleBoard = async (boardId: string) => {
+    try {
+        return await prisma.board.findFirst({
+            where: {
+                id: boardId
+            },
+            include: {
+                participants: true
+            }
+        })
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+export const createBoard = async (
+    workspaceId: string,
+    name: string,
+    description?: string,
+    color?: string,
+) => {
+    const userId = await isAuthenticated()
 
+    try {
+        const boards = await fetchBoards(workspaceId)
+        const boardsLength = boards.length ?? 0
+
+        return prisma.board.create({
+            data: {
+                name,
+                description,
+                color,
+                workspaceId,
+                position: boardsLength + 1,
+                participants: {
+                    create: {
+                        userId,
+                        role: "admin"
+                    }
+                }
+            }
+        })
+
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+export const updateBoard = async (
+    boardID: string,
+    data: any
+) => {
+    const userId = await isAuthenticated()
+
+    const isManager = await isBoardManager(boardID, userId)
+    if (!isManager) throw new Error("You don't have permission to update this board")
+
+    try {
+        if (data.workspaceId) {
+            const boards = await fetchBoards(data.workspaceId)
+            const boardsLength = boards.length ?? 0
+
+            const board = await fetchSingleBoard(boardID)
+            const previousWorkspaceId = board.workspaceId
+
+            return prisma.$transaction([
+                prisma.board.update({
+                    where: {
+                        id: boardID
+                    },
+                    data: {
+                        workspaceId: data.workspaceId,
+                        position: boardsLength + 1
+                    }
+                }),
+                prisma.board.updateMany({
+                    where: {
+                        workspaceId: previousWorkspaceId,
+                        position: {
+                            gt: board.position
+                        }
+                    },
+                    data: {
+                        position: {
+                            decrement: 1
+                        }
+                    }
+                })
+            ])
+        } else {
+            return prisma.board.update({
+                where: {
+                    id: boardID
+                },
+                data
+            })
+        }
+
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+export const deleteBoard = async (boardID: string) => {
+    const userId = await isAuthenticated()
+
+    const isManager = await isBoardManager(boardID, userId)
+    if (!isManager) throw new Error("You don't have permission to update this board")
+
+    try {
+        const actualBoard = await fetchSingleBoard(boardID)
+        const {position} = actualBoard
+
+        return prisma.$transaction([
+            prisma.userBoard.deleteMany({
+                where: {
+                    boardId: boardID
+                }
+            }),
+            prisma.board.delete({
+                where: {
+                    id: boardID
+                }
+            }),
+            prisma.board.updateMany({
+                where: {
+                    position: {
+                        gt: position
+                    }
+                },
+                data: {
+                    position: {
+                        decrement: 1
+                    }
+                }
+            })
+        ])
+
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
 export const swapBoards = async (sourceId: string, sourceIndex: number, destinationIndex: number) => {
     const userId = await isAuthenticated()
 
@@ -85,91 +222,6 @@ export const swapBoards = async (sourceId: string, sourceIndex: number, destinat
             ]
 
         })
-    } catch (error: any) {
-        throw new Error(error.message)
-    }
-}
-
-export const fetchSingleBoard = async (boardId: string) => {
-    try {
-        return await prisma.board.findFirst({
-            where: {
-                id: boardId
-            }
-        })
-    } catch (error: any) {
-        throw new Error(error.message)
-    }
-}
-export const createBoard = async (
-    workspaceId: string,
-    name: string,
-    description?: string,
-    color?: string,
-) => {
-    const userId = await isAuthenticated()
-
-    try {
-        const boards = await fetchBoards(workspaceId)
-        const boardsLength = boards.length ?? 0
-
-        return prisma.board.create({
-            data: {
-                name,
-                description,
-                color,
-                workspaceId,
-                position: boardsLength + 1,
-                participants: {
-                    create: {
-                        userId,
-                        role: "admin"
-                    }
-                }
-            }
-        })
-
-    } catch (error: any) {
-        throw new Error(error.message)
-    }
-}
-
-export const updateBoard = async (
-    boardID: string,
-    data: any
-) => {
-    const userId = await isAuthenticated()
-
-    const isManager = await isBoardManager(boardID, userId)
-    if (!isManager) throw new Error("You don't have permission to update this board")
-
-    try {
-
-        return prisma.board.update({
-            where: {
-                id: boardID
-            },
-            data
-        })
-
-    } catch (error: any) {
-        throw new Error(error.message)
-    }
-}
-
-export const deleteBoard = async (boardID: string) => {
-    const userId = await isAuthenticated()
-
-    const isManager = await isBoardManager(boardID, userId)
-    if (!isManager) throw new Error("You don't have permission to update this board")
-
-    try {
-        return prisma.board.delete({
-            where: {
-                id: boardID
-            }
-        })
-
     } catch (error: any) {
         throw new Error(error.message)
     }

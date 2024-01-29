@@ -3,11 +3,13 @@ import {Button} from "@/components/ui/button";
 import {useQueryString} from "@/hooks/useQueryString";
 import {Edit} from "lucide-react";
 
-export const Rename = ({className}: { className?: string }) => {
+export const Rename = ({target, id, className}: {target: string, id: string, className?: string }) => {
     const {createQueryString} = useQueryString()
+
     const handleRename = () => {
-        return createQueryString("rename", "1")
+        return createQueryString(`rename-${target}`, id)
     }
+
     return <Button
         variant="ghost"
         size="sm"

@@ -5,7 +5,7 @@ import {useBoards} from "@/stores/boards";
 import {useParams} from "next/navigation";
 import {BoardCard} from "@/components/pages/boards/BoardCard";
 import {ScrollArea} from "@/components/ui/scroll-area";
-import {CreateBoardCard} from "@/components/pages/boards/CreateBoardCard";
+import {DesktopBoardCard} from "@/components/pages/boards/DesktopBoardCard";
 import {MobileCreateBoard} from "@/components/pages/boards/MobileCreateBoard";
 import {
     closestCorners,
@@ -28,9 +28,7 @@ export const Boards = () => {
     const boardStore = useBoards()
     const [currentBoardId, setCurrentBoardId] = useState<string | null>(null)
     const [isOutOfRect, setIsOutOfRect] = useState(false)
-
     const activeBoard = currentBoardId && boardStore.boards.find((board: any) => board.id === currentBoardId)
-
     useEffect(() => {
         (async () => {
             await boardStore.fetchBoards(params.workspaceId as string)
@@ -148,35 +146,36 @@ export const Boards = () => {
 
     return (
         <div id="boardsArea" className="h-full">
-        <DndContext
-            sensors={sensors}
-            collisionDetection={closestCorners}
-            onDragStart={handleDragStart}
-            onDragMove={handleDragMove}
-            onDragEnd={handleDragEnd}
-        >
-            <ScrollArea
-                className="h-[calc(100vh-13rem)] md:h-[calc(100vh-10rem)] p-2 md:py-0 md:px-8 xl:px-16 border rounded-lg">
-                <div
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-2 overflow-hidden p-2">
-                    <SortableContext
-                        id="boardsArea"
-                        items={boardStore.boards.map((board: any) => board.id)}
-                    >
-                        {boardStore.boards.map((board: any) => (
-                            <BoardCard key={board.id} board={board} isOutOfRect={isOutOfRect}/>
-                        ))}
-                    </SortableContext>
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCorners}
+                onDragStart={handleDragStart}
+                onDragMove={handleDragMove}
+                onDragEnd={handleDragEnd}
+            >
+                <ScrollArea
+                    className="h-[calc(100vh-13rem)] md:h-[calc(100vh-10rem)] p-2 md:py-0 md:px-8 xl:px-16">
+                    <div
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4 py-2 overflow-hidden">
 
-                    <CreateBoardCard/>
+                        <DesktopBoardCard/>
 
-                    <MobileCreateBoard/>
-                </div>
-            </ScrollArea>
-            <DragOverlay>
-                {activeBoard && <BoardCard board={activeBoard} className="transform rotate-6"/>}
-            </DragOverlay>
-        </DndContext>
+                        <MobileCreateBoard/>
+
+                        <SortableContext
+                            id="boardsArea"
+                            items={boardStore.boards.map((board: any) => board.id)}
+                        >
+                            {boardStore.boards.map((board: any) => (
+                                <BoardCard key={board.id} board={board} isOutOfRect={isOutOfRect}/>
+                            ))}
+                        </SortableContext>
+                    </div>
+                </ScrollArea>
+                <DragOverlay>
+                    {activeBoard && <BoardCard board={activeBoard} className="transform rotate-6 h-full"/>}
+                </DragOverlay>
+            </DndContext>
         </div>
     )
 }

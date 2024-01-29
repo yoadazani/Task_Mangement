@@ -1,5 +1,3 @@
-"use client"
-
 import {Heading} from "@/components/shared/Heading";
 import Description from "@/components/shared/Description";
 import {AllMembers} from "@/components/pages/workspace/settings/AllMembers";

@@ -25,7 +25,7 @@ export const ParticipantsGroup = ({participants, avatarWidth, avatarHeight, maxA
             })
         }
         {
-            participants?.length! > 5 &&
+            participants?.length! > maxAvatars &&
             <Button
                 variant="ghost"
                 size="xs"
@@ -33,7 +33,7 @@ export const ParticipantsGroup = ({participants, avatarWidth, avatarHeight, maxA
             >
                 <div className="flex items-center w-[inherit] h-[inherit] text-center font-bold text-zinc-900 pr-1">
                     <Plus className="h-3 w-3"/>
-                    <span className="text-xs">{participants?.length! - 5}</span>
+                    <span className="text-xs">{participants?.length! - maxAvatars}</span>
                 </div>
             </Button>
         }

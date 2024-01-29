@@ -48,7 +48,7 @@ export const CreateWorkspace = () => {
             )
 
             toast.success(`workspace " ${response?.name} " created successfully`)
-            router.push("/workspace/" + response?.id)
+            router.push("/workspace/" + response?.id + "/boards")
         } catch (error: any) {
             return toast.error(error.message)
         } finally {
